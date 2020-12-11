@@ -36,4 +36,5 @@ function [EBO_matrix]=get_ebo()
         R_matrix = [R_matrix R'];
         p_all{i} = p';
     end
+    EBO_matrix=abs(EBO_matrix);
 end

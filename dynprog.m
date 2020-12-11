@@ -7,6 +7,9 @@ decisionsGetter = getPossibleDecisions(costs);
 h=@(stage, state, decision) state - decision*costs(stage);
 
 EBO_matrix=get_ebo();
-fstar=get_fstar(decisionsGetter, h, EBO_matrix);
+LRUs=9;
+max_budget=500;
+fstar=get_fstar(decisionsGetter, h, EBO_matrix, LRUs, max_budget);
 
-sol=fstar(1, 100)
+sol=fstar(1, 500)
+
