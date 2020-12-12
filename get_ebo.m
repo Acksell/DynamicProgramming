@@ -1,5 +1,5 @@
 function [EBO_matrix]=get_ebo()
-    l = [50 40 45 51 25 48 60 45 10]*1e-3 ; % Arrival intensities
+    l = [50 40 45 51 25 48 60 35 15]*1e-3 ; % Arrival intensities
     T = [4 7 14 5 10 18 24 8 12]; % Repair times [hours]
     c = [14 19 25 15 10 45 80 33 30]'; % LRUj cost
     s = [0 0 0 0 0 0 0 0 0]'; % Initial distribution of spare parts
