@@ -1,6 +1,7 @@
 function [fstarfunc]=get_fstar(getDecisions, state_update, obj, LRUs, budget)
     memo=zeros(LRUs+1, budget+1);
     has_calculated=zeros(LRUs+1, budget+1);
+    decisions=zeros(LRUs,budget+1);
     function [opt]=fstar(stage, state)
         possible_decisions=getDecisions(stage, state);
         values = zeros(1, length(possible_decisions) );
@@ -15,12 +16,29 @@ function [fstarfunc]=get_fstar(getDecisions, state_update, obj, LRUs, budget)
                 end
                 values(decision+1) = obj(decision+1, stage) + memo(next_stage, next_state+1);
             end
-            [opt, ~]=min(values);
+
+            [opt, decision]=min(values);
+            decisions(stage,state+1)=decision-1; % -1 because index.
         else % no more decisions, reached end of all stages.
             opt=0;
             memo(stage, state+1)=0;
+            decisions(stage,state+1)=0;
             has_calculated(stage, state+1)=1;
         end
     end
-    fstarfunc=@fstar;
+
+    function [sol, best_decisions]=startRecursion(state)
+        sol=fstar(1, state);
+        best_decisions=zeros(1,LRUs);
+        % get optimal decisions.
+        s=state;
+        stage=1;
+        while stage<=LRUs
+            decision=decisions(stage, s+1);
+            best_decisions(stage)=decision;
+            s=state_update(stage, s, decision);
+            stage=stage+1;
+        end
+    end
+    fstarfunc=@startRecursion;
 end
